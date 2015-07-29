@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head lang="en">
+
+    <title>Random Effects Illustration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<!--Load Libraries-->
+<script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
+<script src="js/d3.min.js"></script>
+
+
+
+<!-- add own vis classes-->
+
+
+<!--Stylesheets-->
+<link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
+
+<!-- add own stylesheet-->
+<link rel="stylesheet" type="text/css" href="css/myStyle.css">
+
+<body>
+
+<div class= "header">
+    <div id="title" class = "title">
+        <div>
+            <h1 class = "title_h1, text-center">Fixed vs Random Effects</h1>
+            <h4 class = "title_h2, text-center">An interactive visualization for S-052</h4>
+        </div>
+    </div>
+
+</div>
+
+<div class= "article">
+    <div id="intro" class = "intro">
+        <div id = "introh3" class = "introh3">
+            <h3>What is the relationship between SES and Math achievement?</h3>
+            <p>Data from a nationally-representative sample of students, including scores on a math achievement test, was collected in 1982.
+                The question we hope to answer is if there is a relationship between SES and Math achievement.  To help demonstrate the intricacies of
+                multi-level data and show the difference between Fixed vs Random effects we will use a  subset that includes 7,185 students from 160
+                schools in 1982. The data contain information on student socioeconomic status, race, and school assignment, all of which we will
+                use in our analysis.</p>
+        </div>
+
+    </div>
+</div>
+
+
+<div class= "article">
+    <div id="totalRegression" class = "totalRegression">
+
+        <div id="totalRegression_h2" class = "totalRegression_h1 text-center">
+            <h2>Total Regression</h2>
+            <button id="TR_button" class = "myButton">Visualize</button>
+        </div>
+        <div id = "totalRegression_vis"></div>
+    </div>
+</div>
+
+<script src="js/total_regression.js"></script>
+
+<script>
+$(function() {
+
+    d3.csv("data/Individual_Level.csv", function(error, raw_data) {
+        if(error != null){
+            console.log("The data didn't load correctly")
+        }else{
+            var regress1 = new Total_Regress(raw_data, d3.select("#totalRegression_vis"))
+
+            $("#TR_button").click(function(){
+                var deferred = $.Deferred();
+
+                console.log(deferred)
+                deferred.done(function(){
+                regress1.averageCollapse()});
+
+                deferred.resolve(regress1.totalAverage());
+            });
+
+        }
+    })
+
+})
+</script>
+
+</body>
+</html>
